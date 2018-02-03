@@ -1,0 +1,189 @@
+<?php
+include 'datab.php';
+SESSION_start();
+if(!(isset($_SESSION["usernm"]))){
+	header("location:index.php");
+}
+
+
+
+//$id=$_REQUEST['restid'];
+$id=$_REQUEST['restid'];
+$_SESSION['restid']=$id;
+$pk = $_SESSION['restid'];
+
+//echo $pk;  
+//echo $id;
+
+$sq = "select count(`rat`) AS num,sum(`rat`) AS sm from `feedback` where `restid`='$pk' ";
+$result = $con->query($sq);
+$row = $result->fetch_assoc();
+$c=$row["num"];
+$s=$row["sm"];
+$v= $s/$c;
+
+
+$usr=$_SESSION['usernm'];
+$q = "SELECT  `regid` FROM `login` WHERE `usernm`='$usr' ";
+$result = $con->query($q);
+$row = $result->fetch_assoc();
+$rid=$row["regid"];
+
+
+
+
+
+if(isset($_POST['gt']))
+{
+$c=$_POST["coments"];
+
+$sql7="INSERT INTO `comment`( `restid`, `regid`, `coments`) VALUES
+ ('$id','$rid','$c')";
+$result=mysqli_query($con,$sql7);
+}
+
+
+
+ ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+Design by TEMPLATED
+http://templated.co
+Released for free under the Creative Commons Attribution License
+
+Name       : CrossWalk
+Description: A two-column, fixed-width design with dark color scheme.
+Version    : 1.0
+Released   : 20140216
+
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" />
+<link href="default.css" rel="stylesheet" type="text/css" media="all" />
+<link href="fonts.css" rel="stylesheet" type="text/css" media="all" />
+
+<!--[if IE 6]><link href="default_ie6.css" rel="stylesheet" type="text/css" /><![endif]-->
+<style>
+div.nw
+{
+	float:right;
+	margin-top:-430px;
+	margin-right:50px;
+}
+</style>
+</head>
+<body>
+<div id="wrapper">
+	<div id="header" class="container">
+<h1><div align="center"><font-color="">RESTURANT DETAILS</div></h1>
+		<div id="menu">
+		
+			<ul>
+				<li  class="current_page_item"><a href="indl_rest_view.php" accesskey="2" title="">MORE</a></li>
+				<li><a href="user.php" accesskey="1" title="">HOMEPAGE</a></li>
+
+
+			</ul>
+		</div>
+</div>
+<br/><br/>
+<!--<h1><div align="center"><font-color=""><marquee>Get Me More More And Choose Your Best Day Make Happy<br/></marquee></div></h1>-->
+
+<!--<table style="border-collapse: collapse; text-align: center; width: 500px;  border: 3px solid blue;">-->
+		<?php
+		$results=mysqli_query($con,"SELECT `restid`, `restnm`, `locs`, `restimg`, `cont`, `mapimg`
+			FROM `resturant` WHERE `restid`=$id;");
+while($row=mysqli_fetch_array($results))
+
+{
+
+?>
+
+<tr><td><img src="images/<?php echo $row['restimg'];?>" alt=" " height="300"  disabled  style="border:none; background-color:white; margin-left:15%;"width="600"></td></tr><br/><br/>
+<tr><td><img src="images/<?php echo $row['mapimg'];?>" disabled  style="border:none; background-color:white; margin-left:5%;" alt=" " height="200" width="200"></td></tr>
+<!--<tr><td><input name="dist" type="text" value="<?php //echo $row['discripition']; ?>"/></td></tr>-->
+<br>
+<div class="nw" >
+<tr><td><input name="unme" type="text" value="<?php echo $row['restnm']; ?>" disabled  style="border:none; background-color:white;font-size:30px;font-family:arial black;  "/></td></tr><br/>
+<tr><td><input name="unme" type="text" value="<?php echo $row['locs']; ?>" disabled  style="border:none; background-color:white;font-family:arial black;margin-left:57px;font-size:20px; "/></td></tr><br/>
+<tr><td><input name="unme" type="text" value="<?php echo $row['cont']; ?>" disabled  style="border:none; background-color:white;font-family:arial black;margin-left:35px; "/></td></tr><br/><br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+<?php
+}
+//echo $v;
+if($v==5)
+		
+{?>
+<img src="images/Star.jpg"  style="height:30px;"></img>
+<img src="images/Star.jpg" style="height:30px;"></img>
+<img src="images/Star.jpg" style="height:30px;"></img>
+<img src="images/Star.jpg" style="height:30px;"></img>
+<img src="images/Star.jpg" style="height:30px;"></img>
+
+	<?php
+}
+elseif($v==4)
+{
+	?><img src="images/Star.jpg"  style="height:30px;"></img>
+	<img src="images/Star.jpg" style="height:30px;"></img></img>
+	<img src="images/Star.jpg" style="height:30px;"></img>
+	<img src="images/Star.jpg" style="height:30px;"></img>
+
+	<?php
+}
+elseif($v=3)
+{
+?><img src="images/Star.jpg"  style="height:30px;"></img>
+	<img src="images/Star.jpg" style="height:30px;"></img></img>
+	<img src="images/Star.jpg" style="height:30px;"></img>
+	<?php
+}
+	
+elseif($v=2)
+{
+?><img src="images/Star.jpg" style="height:30px;"></img>
+	<img src="images/Star.jpg" style="height:30px;"></img></img>
+<?php	
+}
+else{
+	?><img src="images/Star.jpg" style="height:30px;"></img>
+	
+<?php
+}
+
+?>
+</div>
+<tr><td><br></td></tr>
+
+</td>
+</tr>
+<!--</table> </center><br/><br/><form id="form1" name="form2" method="post" action="#" >
+<center>
+<input type="text" name="coments"  placeholder="enter your comments about food on resturants"  cols="45" rows="5" required /></td>
+<input type="submit" name="gt" value="send"><br><br>
+</center></form>
+&nbsp&nbsp&nbsp&nbsp&nbsp
+<h3><font-color=""><center>VIEW COMMENTS</center></h3>
+<center>
+<!---<table style="border-collapse: collapse; text-align: center; width: 500px;  border: 3px solid blue;">-->
+		
+<tr><td><br></td></tr>
+
+</td>
+</tr>
+</table>
+
+</div>
+<center><table style="border-collapse: none; text-align: center; width: 300px;">
+<tr><td ><a href="rating.php?restid=<?php echo $id; ?>" >
+CLICK TO SEE RATING</a>
+</table></center>
+<div id="copyright" style="background-color: #990066;">
+	<p>&copy; Untitled. All rights reserved. | Photos by <a href="http://fotogrph.com/">Fotogrph</a> | Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a>.</p>
+</div>
+</body>
+</html>

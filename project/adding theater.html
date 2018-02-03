@@ -1,0 +1,109 @@
+<!doctype html>
+<?php
+    include 'connection.php';
+	if(isset($_POST['submit']))
+    {   
+		$a=$_POST["email"];
+		echo $a;
+		$b=$_POST["pass"];
+		echo $b;
+		$g=$_POST["cpass"];
+		$c=$_POST["fname"];
+		echo $c;
+		$d=$_POST["lname"];
+		echo $d;
+		$e=$_POST["phone"];
+		echo $e;
+		$f=$_POST["address"];
+		//echo $e1;
+		if($b==$g)
+		{
+			
+		
+		$sql="INSERT INTO `userlogin`(`username`, `password`, `fname`, `lname`, `phone`, `address`) VALUES ('$a','$b','$c','$d','$e','$f')";
+		$result=mysqli_query($con,$sql);
+		$to = $a;
+			$subject = "Universal Cinema";
+			$message ="<html>
+			<head>
+			<title>User registeration</title>
+			</head>
+			<body>
+			<p>your username and password is below</p>
+			<table>
+			<tr>
+			<th>UserName</th>
+			<th>password</th>
+			</tr>
+			<tr>
+			<td>'$a'</td>
+			<td>'$b'</td>
+			</tr>
+			</table>
+			</body>
+			</html>";
+			$headers = "MIME-Version: 1.0" . "\r\n";
+			$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+			$headers .= 'From: <anands@mca.ajce.in>' . "\r\n";
+			$headers .= 'Cc: anands@mca.ajce.in' . "\r\n";
+			mail($to,$subject,$message,$headers);
+	}	
+	
+	else
+	{
+		echo("enter correct password");
+	}
+	}
+	?>
+<html>
+<head>
+<script src="reg.js"></script>
+<link rel="stylesheet" href="reg.css" />
+</head>
+<body>
+<div class="menu">
+  <table  style="color: #fff;
+						font-size: 2em;
+						font-weight: 200;
+						font-family: 'Georgia', cursive;
+						align="right";
+						>
+			<tr><td><a class="links" style="color: #DC6180;text-decoration: none;" href="index.html">
+			
+	HOME&nbsp|&nbsp
+	</a></td>
+	<td><a class="links" style="color: #DC6180;text-decoration: none;" href="index.html">
+			
+	LOGIN &nbsp&nbsp
+	</a></td></tr>
+	</table>
+	</div>
+<form name="treg" id="msform" method="post" action="#">
+    <fieldset>
+  <table>
+    <tr><th style="align:center;"><h2 class="fs-title">Create Theater owner account</h2></th></tr>
+	<tr><td> 
+	<select>
+	<option>Location</option>
+    <option value="volvo">Volvo</option>
+    <option value="saab">Saab</option>
+    <option value="mercedes">Mercedes</option>
+    <option value="audi">Audi</option>
+    </select>
+    </td></tr>
+	<tr><td><input type="text" name="email" placeholder="Email" /></td></tr>
+	<tr>	<td><input type="password" name="pass" placeholder="Password" /></td></tr>
+	<tr>	<td><input type="password" name="cpass" placeholder="Confirm Password" /></td></tr>
+	<tr style="align:center;"><td>Personal Details</td></tr>
+	<tr><td><input type="text" name="fname" placeholder="First Name" /></td>
+			<td><input type="text" name="lname" placeholder="Last Name" /></td></tr>
+	<tr><td><input type="text" name="phone" placeholder="Phone" /></td></tr>
+		<tr><td><textarea name="address" placeholder="Address"></textarea></td></tr>
+	
+    <tr><td><input type="submit" name="submit" class="submit action-button" value="Submit" /></td>
+	</tr>
+	</table>
+	</fieldset>
+</form>
+</body>
+</html>
